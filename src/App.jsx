@@ -1,6 +1,7 @@
 import Footer from "./components/Footer"
 import Header from "./components/Header"
 import Contact from "./pages/Contact"
+import AdminLogin from "./Admin/AdminLogin"
 import Home from "./pages/Home"
 import About from "./pages/About"
 import Login from "./pages/Login"
@@ -19,6 +20,7 @@ function App() {
                     <Route path="/Contact" element={<Contact />}/>
                     <Route path="/Login" element={<Login />} />
                     <Route path="/Signup" element={<SignUp />} />
+                    <Route path="/AdminLogin" element={<AdminLogin />} />
               </Routes>
           <Footer />
       </Router>

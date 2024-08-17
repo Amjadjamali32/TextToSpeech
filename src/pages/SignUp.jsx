@@ -1,21 +1,52 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
+import axios from "axios"
 
 const SignUp = () => {
+    const [data , setData] = useState({
+        name: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+    })
+
+    const handleChange = (e) => {
+        const { name , value } = e.target;
+        setData((prevData) => ({
+            ...prevData,
+            [name]: value,
+        }));
+    };
+    
+
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+
+        try {
+            const response = await axios.post('/api/signup', data);
+            console.log('Signup successful:', response.data);
+        } catch (error) {
+            console.error('Signup failed:', error);
+        }
+    }
+
     return (
         <>
             <div className='pt-20 bg-pink-200 pb-4'>
                 <div className='bg-white mx-2 p-3 rounded-md shadow-lg my-2'>
-                    <form className="max-w-sm mx-auto">
+                    <form className="max-w-sm mx-auto" onSubmit={handleSubmit}>
                         <h2 className='text-center text-2xl font-bold my-2'>Signup</h2>
                         <div className="mb-5 mt-5">
-                            <input type="email" id="email" name="user_email" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 " placeholder="Email" required />
-                        </div>
-                        <div className="mb-3">
-                            <input type="password" id="password" name='user_password' className="bg-gray-50 border border-gray-300 text-gray-900 text-sm focus:ring-blue-500 rounded-sm focus:border-blue-500 block w-full p-2.5" required  placeholder='Create password'/>
+                            <input type="text" id="name" name="name" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 " placeholder="Name" required onChange={handleChange}/>
                         </div>
                         <div className="mb-5 mt-5">
-                            <input type="password" id="confirmPassword" name='confirmPassword' className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 " placeholder="Confirm password" required />
+                            <input type="email" id="email" name="email" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 " placeholder="Email" required onChange={handleChange} />
+                        </div>
+                        <div className="mb-3">
+                            <input type="password" id="password" name='password' className="bg-gray-50 border border-gray-300 text-gray-900 text-sm focus:ring-blue-500 rounded-sm focus:border-blue-500 block w-full p-2.5" required  placeholder='Create password' onChange={handleChange} />
+                        </div>
+                        <div className="mb-5 mt-5">
+                            <input type="password" id="confirmPassword" name='confirmPassword' className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 " placeholder="Confirm password" required onChange={handleChange} />
                         </div>
                         <button type="submit" className="focus:ring-4 focus:outline-none rounded-sm text-sm w-full sm:w-auto px-5 py-2.5 text-center bg-yellow-400 hover:bg-yellow-600">Signup</button>
                         <div className='mt-2'>
