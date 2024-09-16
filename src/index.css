@@ -1,3 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap');
+
+body {
+    background: rgb(252,227,248);
+    background: radial-gradient(circle, rgba(252,227,248,1) 0%, rgba(255,237,252,1) 28%);
+}
 
 @tailwind base;
 @tailwind components;

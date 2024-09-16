@@ -3,7 +3,7 @@ import React from 'react'
 const About = () => {
     return (
         <>
-            <div className='pt-20 bg-pink-200 pb-3'>
+            <div className='pt-20 pb-3'>
                 <div className='shadow-lg my-3 mx-2 p-2 bg-white rounded-sm'>
                     <h2 className='text-center font-bold text-lg mt-2'>Introduction</h2>
                     <p className='my-2 mx-4'>"Our app transforms written text into natural-sounding speech using advanced AI technology. Whether you're looking to listen to articles, convert text to audio for accessibility, or create custom voice overs, our app has you covered."</p>

@@ -1,8 +1,15 @@
-import React, { useState } from 'react'
+import React, { useState , useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import axios from "axios"
+import { useNavigate } from 'react-router-dom';
+import logo from "../assets/logo.png"
+import { login } from '../app/features/Auth/AuthSlice';
+import { useDispatch , useSelector } from 'react-redux';
 
 const Login = () => {
+    const dispatch = useDispatch();
+    const auth = useSelector((state) => state.auth);
+    const navigate = useNavigate()
+    
     const [data , setData] = useState({
         email: '',
         password: '',
@@ -18,21 +25,34 @@ const Login = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-
-        try {
-            const response = await axios.post('/api/login', data);
-            console.log('Login successful:', response.data);
-        } catch (error) {
-            console.error('Login failed:', error);
-        }
+        const { email , password } = data
+        const userData = { email, password };
+        dispatch(login(userData))
+        console.log(userData);
     }
+
+    // Use useEffect to handle navigation on successful login
+    useEffect(() => {
+        if (auth.isAuthenticated) { 
+            // Assuming `auth.isAuthenticated` becomes true on successful login
+            navigate("/Profile"); // Redirect to Profile page
+        }
+    }, [auth.isAuthenticated, navigate]); // Dependency array: watch for changes in auth state
+
 
     return (
         <>
-            <div className='pt-20 bg-pink-200 pb-4'>
+            <div className='pt-20 pb-4'>
                 <div className='bg-white mx-2 p-3 rounded-md shadow-lg my-2'>
+                    <img src={logo} alt="logo" width={40} className='mx-auto mt-2'/>
                     <form className="max-w-sm mx-auto" onSubmit={handleSubmit}>
                         <h2 className='text-center text-2xl font-bold my-2'>Login</h2>
+
+                        {/* Feedback Messages */}
+                        {auth.loading && <p className="text-center text-black">Loading...</p>}
+                        {auth.error && <p className="text-center text-red-500">Error: {auth.error}</p>}
+
+
                         <div className="mb-5 mt-5">
                             <input type="email" id="email" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 " placeholder="Email" required name="email" onChange={handleInputChange} />
                         </div>
@@ -41,15 +61,15 @@ const Login = () => {
                         </div>
                         <div className="flex items-center flex-col mb-3">
                             <button>
-                                <a href="" className='text-blue-400 font-semibold hover:text-blue-600'>Forgot password?</a>
+                                <a href="" className='text-blue-400 text-sm hover:text-blue-600'>Forgot password?</a>
                             </button>
                             <button className='mt-1'>
                                 <Link to="/AdminLogin" className='text-yellow-500 font-semibold hover:text-yellow-600'>Login as Admin</Link>
                             </button>
                         </div>
-                        <button type="submit" className="focus:ring-4 focus:outline-none rounded-sm text-sm w-full sm:w-auto px-5 py-2.5 text-center bg-yellow-400 hover:bg-yellow-600">Login</button>
+                        <button type="submit" className="focus:ring-4 focus:outline-none rounded-sm w-full sm:w-auto px-5 py-2.5 text-center text-sm font-semibold bg-yellow-400 hover:bg-yellow-600">Login</button>
                         <div className='mt-2'>
-                            <p className='text-center'>Don't have an account?<span className='text-yellow-500 font-bold hover:text-yellow-600'><Link to="/Signup"> Signup</Link></span></p>
+                            <p className='text-center text-sm'>Don't have an account?<span className='text-yellow-500 font-bold hover:text-yellow-600'><Link to="/Signup"> Signup</Link></span></p>
                             <p className='text-center my-3'>------------ or ------------</p>
                         </div>
                         <div className='text-center mt-5'>
